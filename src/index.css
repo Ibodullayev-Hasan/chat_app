@@ -1,0 +1,15 @@
+:root {
+  --chat-bg-color: white;
+  --chat-bg-img: none;
+  --chat-font: Arial, sans-serif;
+  --chat-text-color: black;
+}
+
+.chat-container {
+  background-color: var(--chat-bg-color);
+  background-image: var(--chat-bg-img);
+  font-family: var(--chat-font);
+  color: var(--chat-text-color);
+  padding: 20px;
+  border-radius: 10px;
+}
