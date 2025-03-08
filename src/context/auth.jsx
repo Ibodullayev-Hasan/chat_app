@@ -2,7 +2,6 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { postRefetchMutation } from "../services/post.service";
 import { getData } from "../services/get.service";
 
@@ -10,16 +9,16 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const router = useNavigate();
-  const [token, setToken] = useState(localStorage.getItem("access_token"));
+  const [token, setToken] = useState(localStorage.getItem("accToken"));
   const { mutate: postRefresh } = postRefetchMutation("user");
 
-  // Token yo'q bo'lsa, uni localStorage'dan o'chirish
   useEffect(() => {
-    if (!token) {
-      localStorage.removeItem("accToken");
-      localStorage.removeItem("refToken");
+    if (!token && !localStorage.getItem("accToken")) {
+        localStorage.removeItem("accToken");
+        localStorage.removeItem("refToken");
     }
-  }, [token]);
+}, [token]);
+
 
   // API'dan user ma'lumotlarini olish
   const { data, isLoading, refetch } = useQuery({
@@ -30,6 +29,8 @@ export const AuthProvider = ({ children }) => {
 
   // Xatoliklar bo‘lsa, tokenni yangilash yoki foydalanuvchini chiqarish
   useEffect(() => {
+    console.log(data);
+    
     if (data === 403 || data === 404) {
       setToken(null);
       router("/");
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
                 setToken(res?.accToken);
                 refetch();
               }
-              if (res?.status == 403) {
+              if (res?.status === 403) {
                 setToken(null);
                 router("/");
               }

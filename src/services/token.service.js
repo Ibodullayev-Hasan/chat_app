@@ -8,9 +8,10 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
-      const accessToken = JSON.parse(localStorage.getItem("accToken"));
-      console.log(accessToken);
-      
+      const accessToken = localStorage.getItem("accToken")
+        ? JSON.parse(localStorage.getItem("accToken"))
+        : null;
+
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }

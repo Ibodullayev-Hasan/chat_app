@@ -41,7 +41,7 @@ export const postRefresh = async ({ url }) => {
       {},
       {
         headers: { Authorization: `Bearer ${JSON.parse(refreshToken)}` },
-      }
+      } 
     );
     return res?.data;
   } catch (error) {
